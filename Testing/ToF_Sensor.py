@@ -62,6 +62,8 @@ async def main():
 			await rvr.reset_yaw()
 		elif dist_f >= 12:
 			await run_raw_motors(1,60,1,60)
+			await asyncio.sleep(.05)
+			print('Going Straight')
 
 try:
     loop.run_until_complete(
