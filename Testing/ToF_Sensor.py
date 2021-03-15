@@ -42,14 +42,15 @@ while True:
 '''
 
 ToF.StartRanging()
-distance = ToF.GetDistance()
-
-distanceInches = distance / 25.4
+## distance = ToF.GetDistance()
+## distanceInches = distance / 25.4
 
 async def main():
 	await rvr.wake()
 	await rvr.reset_yaw()
 	while True:
+		distance = ToF.GetDistance()
+		distanceInches = distance / 25.4
 		dist_f = int(distanceInches)
 		await asyncio(.05)
 		print('Distance is {0} inches'.format(dist_f))
