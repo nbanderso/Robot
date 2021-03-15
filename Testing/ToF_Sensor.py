@@ -25,7 +25,7 @@ print("Testing qwiic sensor")
 ToF = qwiic.QwiicVL53L1X()
 if (ToF.SensorInit() == None):
 	print("Finally! not stuck!")
- '''
+'''
 while True:
 	try:
 		ToF.StartRanging()
