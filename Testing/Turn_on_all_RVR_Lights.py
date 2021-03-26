@@ -11,6 +11,20 @@ from sphero_sdk import DriveFlagsBitmask #not sure what this does
 
 rvr = SpheroRvrObserver()
 
+"""
+all_lights commands =
+    status_indication_left
+    status_indication_right
+    headlight_left
+    headlight_right
+    battery_door_front
+    battery_door_rear
+    power_button_front
+    power_button_rear
+    brakelight_left
+    breaklight_right
+"""
+
 #function to change lights
 def LightsChange(red,green,blue):
      rvr.set_all_leds(
