@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+from random import randrange
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 #import RVR stuff
@@ -9,6 +10,7 @@ from sphero_sdk import Colors
 from sphero_sdk import RvrLedGroups
 from sphero_sdk import DriveFlagsBitmask #not sure what this does
 from sphero_sdk import BatteryVoltageStatesEnum as VoltageStates
+from sphero_sdk import RawMotorModesEnum
 
 #import Spark Fun stuff
 import qwiic
@@ -25,10 +27,20 @@ def LightsChange(red,green,blue):
         led_group=RvrLedGroups.all_lights.value,
         led_brightness_values=[color for _ in range(10) for color in [red,green,blue]]
     )
+    
+#function to drive RVR    
+def DriveWithHeading(sp,speed):
+    rvr.drive_with_heading(
+        speed=sp, # speed=0-255
+        heading=head, # angle=0-359
+        flags=DriveFlagsBitmask.none.value
+    )
 
 rvr.wake()
 time.sleep(2)
 print('Rvr Online')
+rvr.reset_yaw()
+
 
 while True:
     try:
@@ -40,6 +52,10 @@ while True:
         distance = ToF.get_distance()
         distanceInches = distance / 25.4
         print("Distance: %s Inches" % (distanceInches))
+        if distanceInches < 12:
+            DriveWithHeading(50,(randrange(359)))
+        else:
+            DriveWithHeading(50,0)
     except KeyboardInterrupt:
         print('Program Interruped by Keyboard Interrupt')
     
