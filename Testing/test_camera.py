@@ -6,7 +6,7 @@ import io
 from datetime import datetime, timedelta
 import statistics
 
-import pantilthat
+import pi_servo_hat       # Pan/Tilt mast controller
 import picamera
 
 
