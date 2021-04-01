@@ -1,3 +1,5 @@
+#Movement not working correctly.  Adjust angles of movement.
+
 import time
 import pi_servo_hat
 from picamera import PiCamera
