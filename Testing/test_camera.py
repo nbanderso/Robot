@@ -6,6 +6,7 @@ import io
 from datetime import datetime, timedelta
 import statistics
 
+#Third Party Modules
 import pi_servo_hat       # Pan/Tilt mast controller
 import picamera
 
@@ -13,6 +14,8 @@ import picamera
 tf_width = 299 #Width required for Tensorflow
 tf_height = 299 #Height required for Tensorflow
 tf_bw = True #Whether Tensflow wants black and white
+camera = PiCamera()
+servo = pi_servo_hat.PiServoHat()
 
 '''
 take_picture() captures a single black and white frame in the dimensions required for TF
@@ -60,39 +63,44 @@ def convert_pic_to_tf(inFile, outFile, outWidth, outHeight, black_and_white=True
 	pass
 
 '''
-point_camera() uses the pan/tilt mast to point the camera in a particular azimuth and elevation.
-Note: the mapping from the argument values to actual direction and elevation angle has not been determined.  Will need to do this experimentally.
-Arguments:	pan - direction to pan the camera (positive if left)
-			tilt - angle to tilt the camera. (negative is up)
+point_camera() uses the servos to point the camera in a particular pan and tilt.
+input 1 = up/down
+input 0 = left/right
 '''
-def point_camera(panval, tiltval):
-	pantilthat.pan(panval) #positive is left from cam POV
-	pantilthat.tilt(tiltval) #negative is up from cam POV
-
+#sets camera servos to center
 def center_camera():
-	pantilthat.tilt(90)
-	pantilthat.pan(-12)
+	servo.move_servo_position(1,0,180)
+	servo.move_servo_position(0,0,180)
+
+#sets camera servos to level and left
+def left_camera():
+    servo.move_servo_position(1,0,180)
+    servo.move_servo_position(0,-90,180)
+    
+#sets camera servoes to level and right
+def right_camera():
+    servo.move_servo_position(1,0,180)
+    servo.move_servo_position(0,90,180)
+    
+#sets camera servos to up and center
+def up_camera():
+    servo.move_servo_position(1,90,180)
+    servo.move_servo_position(0,0,180)
 
 def main():
 	center_camera()
 	PicCount = 1 #keeps track of picture count
-	pantilthat.tilt(90)
-	#Look Right
-	for PanAngle in range(0, -100, -10):
-		pantilthat.pan(PanAngle)
-		picFile = "rocko%0.3d.png" % (PicCount)
-		time.sleep(1) #let the camera stop moving
-		time_picture(PicFile)
-		#cRange = adc_to_range()
-		#print("Picture %s, range %0.3f, azimuth %d" % (PicFile, cRange, PanAngle))
-		PicCount += 1
-	#Look Left
-	for PanAngle in range(0, 100, 10):
-		pantilthat.pan(PanAngle)
-		picFile = "rocko%0.3d.png" % (PicCount)
-		time.sleep(1) #let the camera stop moving
-		take_picture(PicFile)
-		#cRange = adc_to_range()
-		#print("Picture %s, range %0.3f, azimuth %d" % (PicFile, cRange, PanAngle))
-		PicCount += 1
-	center_camera
+	for Look_left():
+	    left_camera()
+	    picFile = "rocko%0.3d.png" % (PicCount)
+	    time.sleep(1)
+	    take_picture(PicFile)
+	    PicCount += 1
+    for Look_right():
+        right_camera()
+        picFile = "rocko%0.3d.png" % (PicCount)
+        time.sleep(1)
+        take_picture(PicFile)
+        PicCount += 1
+    center_camera()
+
