@@ -1,31 +1,27 @@
+import time
 import pi_servo_hat
 import picamera
 
-pi_servo_hat.restart()
-
-def point_camera(panval,tiltval):
-    pi_servo_hat.pan(panval)
-    pi_servo_hat.tilt(tiltval)
-
+servo = pi_servo_hat.PiServoHat()
+servo.restart()
 
 def center_camera():
-    pi_servo_hat.tilt(1,0,180)
-    pi_servo_hat.pan(0,0,180)
+    servo.move_servo_positon(1,0,180)
+    servo.move_servo_position(0,0,180)
     
 def left_camera():
-    pi_servo_hat.tilt(1,0,180)
-    pi_servo_hat.pan(0,-90,180)
-    
+    servo.move_servo_position(1,0,180)
+    servo.move_servo_position(0,-90,180)
+
 def right_camera():
-    pi_servo_hat.tilt(1,0,180)
-    pi_servo_hat.pan(0,90,180)
+    servo.move_servo_position(1,0,180)
+    servo.move_servo_position(0,90,180)
 
 def up_camera():
-    pi_servo_hat.tilt(1,90,180)
-    pi_servo_hat.pan(0,0,180)
+    servo.move_servo_position(1,90,180)
+    servo.move_servo_position(0,0,180)
     
 while True:
-    camera.start_preview()
     print('centering')
     center_camera()
     time.sleep(1)
