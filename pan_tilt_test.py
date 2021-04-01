@@ -1,9 +1,13 @@
 import time
 import pi_servo_hat
-import picamera
+from picamera import PiCamera
 
 servo = pi_servo_hat.PiServoHat()
+camera = PiCamera()
+camera.resolution = (1024, 768)
 servo.restart()
+
+
 
 def center_camera():
     servo.move_servo_positon(1,0,180)
@@ -22,6 +26,8 @@ def up_camera():
     servo.move_servo_position(0,0,180)
     
 while True:
+    camera.start_preview()
+    time.sleep(1)
     print('centering')
     center_camera()
     time.sleep(1)
@@ -33,3 +39,4 @@ while True:
     time.sleep(1)
     print('up')
     up_camera()
+    center_camera()
