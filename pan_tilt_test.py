@@ -3,11 +3,10 @@ import pi_servo_hat
 from picamera import PiCamera
 
 servo = pi_servo_hat.PiServoHat()
-camera = PiCamera()
-camera.resolution = (1024, 768)
 servo.restart()
 
-
+camera = PiCamera()
+camera.resolution = (1024, 768)
 
 def center_camera():
     servo.move_servo_positon(1,0,180)
